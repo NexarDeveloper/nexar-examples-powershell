@@ -19,6 +19,8 @@ Some scripts are templates for further development and customization.
 - File operations
     - [Upload-NexarFile](#upload-nexarfile)
     - [Download-NexarFile](#download-nexarfile)
+- Tools
+    - [Show-NexarVoyager](#show-nexarvoyager)
 
 ## Prerequisites
 
@@ -91,3 +93,23 @@ This ID is valid for several hours and used in relevant Nexar GraphQL operations
 
 Given the ID of previously uploaded file, this script downloads this file to the specified location.
 This script is rather added for completeness, clients do not have to use it in designed scenarios.
+
+## Show-NexarVoyager
+
+[Show-NexarVoyager.ps1](Scripts/Show-NexarVoyager.ps1)
+
+Nexar GraphQL Voyager online: <https://api.nexar.com/ui/voyager>
+
+This script generates and opens HTML which renders GraphQL Voyager with the
+Nexar GraphQL API and several display options. The script is ready to use as
+is, without prerequisites and even parameters.
+
+By default the script renders the graph with `Query` as the root. The graph is
+the same as online and rather large. Use the parameter `RootType` in order to
+show the graph for a particular type, perhaps with some options, e.g.
+
+```powershell
+Show-NexarVoyager DesComponent -HideDocs
+```
+
+shows just the `DesComponent` sub-graph with the left docs panel hidden.
