@@ -39,10 +39,10 @@ param(
 $ErrorActionPreference = 1
 $ProgressPreference = 0
 
-$uri = [Uri]::new($NexarFilesUrl, "File/Download?id=$FileId")
+$downloadUrl = "$NexarFilesUrl".TrimEnd('/') + "/File/Download?id=$FileId"
 
 $headers = @{
     token = $NexarToken
 }
 
-Invoke-WebRequest -Uri $uri -Headers $headers -OutFile $OutFile
+Invoke-WebRequest -Uri $downloadUrl -Headers $headers -OutFile $OutFile

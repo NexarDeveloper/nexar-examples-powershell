@@ -37,10 +37,11 @@ Add-Type -AssemblyName System.Net.Http
 
 $Path = $PSCmdlet.GetUnresolvedProviderPathFromPSPath($Path)
 
+$uploadUrl = "$NexarFilesUrl".TrimEnd('/') + '/File/Upload'
+
 $http, $data, $form, $response = $null
 try {
 	$http = [System.Net.Http.HttpClient]::new()
-	$http.BaseAddress = $NexarFilesUrl
 	$http.DefaultRequestHeaders.Add('token', $NexarToken)
 
 	$data = [System.Net.Http.ByteArrayContent]::new([System.IO.File]::ReadAllBytes($Path))
@@ -49,7 +50,7 @@ try {
 	$form = [System.Net.Http.MultipartFormDataContent]::new()
 	$form.Add($data, 'file', [System.IO.Path]::GetFileName($Path))
 
-	$response = $http.PostAsync('File/Upload', $form).GetAwaiter().GetResult()
+	$response = $http.PostAsync($uploadUrl, $form).GetAwaiter().GetResult()
 	$content = $response.Content.ReadAsStringAsync().GetAwaiter().GetResult()
 	if ($response.IsSuccessStatusCode) {
 		$content
