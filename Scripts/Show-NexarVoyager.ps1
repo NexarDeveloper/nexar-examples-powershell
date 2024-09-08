@@ -6,9 +6,8 @@
 	This command generates and opens HTML which renders GraphQL Voyager with
 	the Nexar GraphQL API URL and several display options.
 
-	The GraphQL Voyager .css and .js files and the script Show-GraphQLVoyager
-	are downloaded once to the cache. Remove them in order to get the latest
-	versions. The cache directory: $HOME/.PowerShelf/Show-GraphQLVoyager
+	Requires:
+	- Show-GraphQLVoyager.ps1, https://www.powershellgallery.com/packages/Show-GraphQLVoyager
 
 .Parameter RootType
 		The root type name. Default: Query
@@ -38,15 +37,14 @@
 		Tells to sort fields on graph by alphabet.
 
 .Example
-	># Show DesComponent sub-graph with all panels hidden:
+	Show-NexarVoyager Mutation
 
+	Shows Mutation subgraph.
+
+.Example
 	Show-NexarVoyager DesComponent -HideDocs -HideSettings
 
-.Link
-	https://github.com/graphql-kit/graphql-voyager
-
-.Link
-	https://www.powershellgallery.com/packages/Show-GraphQLVoyager
+	Shows DesComponent subgraph with all panels hidden.
 #>
 
 [CmdletBinding()]
@@ -72,17 +70,6 @@ param(
 )
 
 $ErrorActionPreference = 1
-$ProgressPreference = 0
 
 $ApiUrl = 'https://api.nexar.com/graphql'
-
-$cache = "$HOME/.PowerShelf/Show-GraphQLVoyager"
-$null = mkdir $cache -Force
-
-$ps1 = "$cache/Show-GraphQLVoyager.ps1"
-if (![System.IO.File]::Exists($ps1)) {
-	Write-Host "Downloading $ps1"
-	Save-Script Show-GraphQLVoyager -LiteralPath $cache -Force
-}
-
-& $ps1 -ApiUrl $ApiUrl @PSBoundParameters
+Show-GraphQLVoyager.ps1 -ApiUrl $ApiUrl @PSBoundParameters
