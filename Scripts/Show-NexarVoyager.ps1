@@ -10,7 +10,7 @@
 	- Show-GraphQLVoyager.ps1, https://www.powershellgallery.com/packages/Show-GraphQLVoyager
 
 .Parameter RootType
-		The root type name. Default: Query
+		The root type name.
 
 .Parameter Output
 		The output HTML file. The default is in the temp directory.
@@ -50,7 +50,7 @@
 [CmdletBinding()]
 param(
 	[Parameter(Position=0)]
-	[string]$RootType = 'Query'
+	[string]$RootType
 	,
 	[string]$Output
 	,
@@ -71,5 +71,5 @@ param(
 
 $ErrorActionPreference = 1
 
-$ApiUrl = 'https://api.nexar.com/graphql'
-Show-GraphQLVoyager.ps1 -ApiUrl $ApiUrl @PSBoundParameters
+$Schema = 'https://api.nexar.com/graphql'
+Show-GraphQLVoyager.ps1 $Schema @PSBoundParameters
