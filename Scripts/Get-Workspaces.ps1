@@ -1,6 +1,6 @@
 ﻿<#
 .Synopsis
-	Gets all workspaces with basic information.
+	Gets user workspaces.
 
 .Parameter NexarToken
 		Specifies the Nexar access token.
@@ -11,10 +11,10 @@
 		Default: $env:NEXAR_API_URL or https://api.nexar.com/graphql
 
 .Inputs
-		None
+	None
 
 .Outputs
-		Workspaces as {name, url, id, location={name, apiServiceUrl, filesServiceUrl}}
+	{name url authId location={name apiServiceUrl filesServiceUrl}}
 #>
 
 [CmdletBinding()]
@@ -32,7 +32,9 @@ query {
   desWorkspaces {
     name
     url
+    authId
     location {
+      name
       apiServiceUrl
       filesServiceUrl
     }
@@ -40,14 +42,14 @@ query {
 }
 '@
 
+$body = @{
+	query = $query
+} | ConvertTo-Json -Compress
+
 $headers = @{
     Authorization = "Bearer $NexarToken"
     'Content-Type' = 'application/json'
 }
-
-$body = @{
-	query = $query
-} | ConvertTo-Json -Compress -Depth 99
 
 $res = Invoke-RestMethod -Method Post -Uri $NexarApiUrl -Body $body -Headers $headers
 $res.data.desWorkspaces

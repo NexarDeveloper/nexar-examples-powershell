@@ -13,6 +13,7 @@ Some scripts are templates for further development and customization.
 - [Prerequisites](#prerequisites)
 - Queries
     - [Get-Workspaces](#get-workspaces)
+    - [Get-Workspace](#get-workspace)
     - [Get-Projects](#get-projects)
 - Mutations
     - [Upload-Project](#upload-project)
@@ -45,9 +46,22 @@ The script gets available workspaces with some useful top level information:
 
 - `name` is the workspace name, e.g. for choosing workspaces in UI
 - `url` is used in many subsequent GraphQL queries and mutations
+- `authId` is used for getting special workspace tokens
 - `location`
-    - `apiServiceUrl` is the GraphQL URL for the most effective work with this workspace
-    - `filesServiceUrl` is the files URL for the most effective work with this workspace
+    - `apiServiceUrl` is the GraphQL URL for more effective work with this workspace
+    - `filesServiceUrl` is the files URL for more effective work with this workspace
+
+## Get-Workspace
+
+[Get-Workspace.ps1](Scripts/Get-Workspace.ps1)
+
+Given a workspace URL, this script gets some workspace details:
+
+- `name` is the workspace name
+- `authId` is used for getting special workspace tokens
+- `location`
+    - `apiServiceUrl` is the GraphQL URL for more effective work with this workspace
+    - `filesServiceUrl` is the files URL for more effective work with this workspace
 
 ## Get-Projects
 
