@@ -69,7 +69,7 @@ param(
 	[switch]$SortByAlphabet
 )
 
-$ErrorActionPreference = 1
+$ErrorActionPreference=1
 
 $Schema = 'https://api.nexar.com/graphql'
 Show-GraphQLVoyager.ps1 $Schema @PSBoundParameters

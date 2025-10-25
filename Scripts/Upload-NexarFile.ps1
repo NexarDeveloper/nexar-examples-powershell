@@ -30,8 +30,8 @@ param(
 	[Uri]$NexarFilesUrl = $(if ($env:NEXAR_FILES_URL) {$env:NEXAR_FILES_URL} else {'https://files.nexar.com'})
 )
 
-$ErrorActionPreference = 1
-$ProgressPreference = 0
+$ErrorActionPreference=1
+$ProgressPreference=0
 
 Add-Type -AssemblyName System.Net.Http
 

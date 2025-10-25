@@ -30,14 +30,15 @@ param(
 	[Uri]$NexarApiUrl = $(if ($env:NEXAR_API_URL) {$env:NEXAR_API_URL} else {'https://api.nexar.com/graphql'})
 )
 
-$ErrorActionPreference = 1
-$ProgressPreference = 0
+$ErrorActionPreference=1
+$ProgressPreference=0
 
 $query = @'
 query Projects($workspaceUrl: String!, $first: Int!, $after: String) {
   desProjects(workspaceUrl: $workspaceUrl, first: $first, after: $after) {
     pageInfo {
       endCursor
+      hasNextPage
     }
     nodes {
       id
@@ -50,21 +51,19 @@ query Projects($workspaceUrl: String!, $first: Int!, $after: String) {
 
 $headers = @{
     Authorization = "Bearer $NexarToken"
-    'Content-Type' = 'application/json'
 }
 
-$cursor = $null
-do {
+for($cursor = $null;; $cursor = $projects.pageInfo.endCursor) {
 	$body = @{
 		query = $query
 		variables = @{
 			workspaceUrl = $WorkspaceUrl
-			first = 50
+			first = 20
 			after = $cursor
 		}
 	} | ConvertTo-Json -Compress -Depth 99
 
-	$res = Invoke-RestMethod -Method Post -Uri $NexarApiUrl -Body $body -Headers $headers
+	$res = Invoke-RestMethod -Method Post -Uri $NexarApiUrl -Headers $headers -Body $body -ContentType application/json
 
 	# result page info and nodes
 	$projects = $res.data.desProjects
@@ -72,7 +71,8 @@ do {
 	# output page nodes
 	$projects.nodes
 
-	# advance paging
-	$cursor = $projects.pageInfo.endCursor
+	# done?
+	if (!$projects.pageInfo.hasNextPage) {
+		break
+	}
 }
-while($cursor)

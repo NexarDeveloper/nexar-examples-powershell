@@ -58,8 +58,8 @@ param(
 	[Uri]$NexarFilesUrl = $(if ($env:NEXAR_FILES_URL) {$env:NEXAR_FILES_URL} else {'https://files.nexar.com'})
 )
 
-$ErrorActionPreference = 1
-$ProgressPreference = 0
+$ErrorActionPreference=1
+$ProgressPreference=0
 
 ### Step 1: Upload to Nexar
 
@@ -79,6 +79,10 @@ mutation UploadProject($input: DesUploadProjectInput!) {
 }
 '@
 
+$headers = @{
+    Authorization = "Bearer $NexarToken"
+}
+
 $body = @{
 	query = $query
 	variables = @{
@@ -92,10 +96,5 @@ $body = @{
 	}
 } | ConvertTo-Json -Compress -Depth 99
 
-$headers = @{
-    Authorization = "Bearer $NexarToken"
-    'Content-Type' = 'application/json'
-}
-
-$res = Invoke-RestMethod -Method Post -Uri $NexarApiUrl -Body $body -Headers $headers
+$res = Invoke-RestMethod -Method Post -Uri $NexarApiUrl -Headers $headers -Body $body -ContentType application/json
 $res.data.desUploadProject.projectId
