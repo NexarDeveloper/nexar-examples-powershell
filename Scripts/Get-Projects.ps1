@@ -44,6 +44,13 @@ query Projects($workspaceUrl: String!, $first: Int!, $after: String) {
       id
       name
       description
+      url
+      previewUrl
+      updatedAt
+      updatedBy {
+        email
+        userName
+      }
     }
   }
 }
